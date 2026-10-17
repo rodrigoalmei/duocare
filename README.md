@@ -1,56 +1,65 @@
-# Welcome to your Expo app 👋
+# DUOCARE Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Primeira entrega navegável do aplicativo materno-infantil DUOCARE, construída com React Native, Expo Router e TypeScript. A implementação segue os documentos em `../design` e usa somente dados demonstrativos, sem diagnóstico ou orientação clínica.
 
-## Get started
+## Requisitos
 
-1. Install dependencies
+- Node.js LTS
+- npm
+- Expo Go, simulador Android/iOS ou navegador para validação visual
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Executar
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Atalhos úteis:
 
-### Other setup steps
+```bash
+npm run android
+npm run ios
+npm run web
+npm run lint
+npm run typecheck
+npx expo-doctor
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Telas desta entrega
 
-## Learn more
+- M01 — Splash (`/`)
+- M02 — Login (`/login`)
+- M05–M07 — Onboarding (`/welcome`)
+- M08 — Cadastro (`/register`)
+- M03 — Home da Mãe (`/home`)
+- M04 — Meu Bebê (`/baby`)
+- M18 — Minha Saúde / Wearables (`/health`)
 
-To learn more about developing your project with Expo, look at the following resources:
+Conteúdos, alertas e perfil também possuem rotas navegáveis básicas. Fluxos futuros usam estados neutros e placeholders.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Estrutura
 
-## Join the community
+- `src/app`: rotas e layouts do Expo Router
+- `src/components`: UI reutilizável, navegação, cards, bebê e saúde
+- `src/constants`: tokens de cor, tipografia, espaçamento, radius e layout
+- `src/contexts`: estado demonstrativo compartilhado
+- `src/hooks`: responsividade e preferência de movimento reduzido
+- `src/mocks`: dados locais neutros
+- `src/services` e `src/repositories`: limites preparados para integrações futuras
+- `assets/illustrations`: imagens aprovadas para o protótipo
 
-Join our community of developers creating universal apps.
+## Responsividade
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Celulares: conteúdo com largura máxima de 430 px e bottom navigation.
+- Telas abaixo de 375 px: grids passam de três para duas colunas.
+- Tablets a partir de 768 px: dashboards em duas colunas e navigation rail lateral.
+- Formulários de autenticação permanecem limitados a 520 px.
+
+## Limites atuais
+
+- Sem backend, autenticação real, banco de dados ou persistência.
+- Sem integração real com wearables, permissões ou sensores.
+- Métricas e perfis são fictícios e identificados como demonstrativos.
+- Conteúdo clínico continua sujeito à validação dos fisioterapeutas.
+- As ilustrações são usadas como arquivos locais para manter a execução offline.

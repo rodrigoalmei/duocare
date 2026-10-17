@@ -1,98 +1,64 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import type { Href } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Animated, Image, Platform, StyleSheet, View } from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { AppText, ScreenContainer } from '@/components/ui';
+import { colors } from '@/constants/colors';
+import { radius } from '@/constants/radius';
+import { spacing } from '@/constants/spacing';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function SplashScreenRoute() {
+  const router = useRouter();
+  const reducedMotion = useReducedMotion();
+  const [opacity] = useState(() => new Animated.Value(0));
+  const [translateY] = useState(() => new Animated.Value(14));
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(opacity, { toValue: 1, duration: reducedMotion ? 120 : 320, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(translateY, { toValue: 0, duration: reducedMotion ? 0 : 320, useNativeDriver: Platform.OS !== 'web' }),
+    ]).start();
+    const timeout = setTimeout(() => router.replace('/(auth)/login' as Href), 1500);
+    return () => clearTimeout(timeout);
+  }, [opacity, reducedMotion, router, translateY]);
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+    <ScreenContainer backgroundColor="#FFF8F6" edges={['top', 'bottom', 'left', 'right']}>
+      <View style={styles.decorTop} />
+      <Animated.View style={[styles.content, { opacity, transform: [{ translateY }] }]}>
+        <Image
+          accessibilityLabel="Mãe com bebê"
+          source={require('@/assets/illustrations/mother-baby-hero.png')}
+          resizeMode="cover"
+          style={styles.hero}
+        />
+        <AppText variant="display" align="center">DUOCARE</AppText>
+        <AppText variant="title" color={colors.textSecondary} align="center" style={styles.tagline}>
+          Cuidado para você e para o seu bebê.
+        </AppText>
+        <View style={styles.dots} accessibilityLabel="Carregando">
+          <View style={[styles.dot, styles.activeDot]} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+        </View>
+        <AppText variant="caption" color={colors.neutral[500]} align="center">
+          NUTES · Saúde materno-infantil
+        </AppText>
+      </Animated.View>
+      <View style={styles.decorBottom} />
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+  content: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing[5], zIndex: 1 },
+  hero: { width: 220, height: 220, borderRadius: radius.full, backgroundColor: colors.brand.softPink },
+  tagline: { maxWidth: 300 },
+  dots: { flexDirection: 'row', gap: spacing[2], alignItems: 'center' },
+  dot: { width: 8, height: 8, borderRadius: radius.full, backgroundColor: colors.brand.motherPink },
+  activeDot: { width: 10, height: 10, backgroundColor: colors.brand.coral },
+  decorTop: { position: 'absolute', width: 180, height: 180, borderRadius: 90, backgroundColor: colors.brand.lightPink, top: -54, left: -46 },
+  decorBottom: { position: 'absolute', width: 160, height: 160, borderRadius: 80, backgroundColor: colors.brand.babyCream, right: -58, bottom: -68 },
 });
