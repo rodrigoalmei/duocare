@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { colors } from '@/constants/colors';
@@ -8,13 +8,21 @@ import type { WearableDevice } from '@/types';
 
 import { AppText } from '../ui';
 
-export function WearableCard({ device, onPress }: { device: WearableDevice; onPress?: () => void }) {
+export function WearableCard({
+  device,
+  onPress,
+  style,
+}: {
+  device: WearableDevice;
+  onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
+}) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Dispositivo conectado: ${device.name}`}
       onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.card, style, pressed && styles.pressed]}>
       <View style={styles.iconCircle}>
         <Ionicons name="watch-outline" size={22} color={colors.text} />
       </View>

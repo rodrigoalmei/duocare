@@ -16,19 +16,23 @@ import {
 import { colors } from '@/constants/colors';
 import { radius } from '@/constants/radius';
 import { spacing } from '@/constants/spacing';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { signIn, loading, error: authError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState<string>();
 
-  const handleLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+  const handleLogin = async () => {
+    setFormError(undefined);
+    try {
+      await signIn(email, password);
       router.replace('/home' as Href);
-    }, 450);
+    } catch (cause) {
+      setFormError(cause instanceof Error ? cause.message : 'Não foi possível entrar.');
+    }
   };
 
   return (
@@ -58,6 +62,7 @@ export default function LoginScreen() {
           placeholder="Digite sua senha"
           value={password}
           onChangeText={setPassword}
+          error={formError ?? authError ?? undefined}
           autoComplete="current-password"
           returnKeyType="done"
           onSubmitEditing={handleLogin}
@@ -66,7 +71,7 @@ export default function LoginScreen() {
         <View style={styles.forgot}>
           <TextButton label="Esqueci minha senha" onPress={() => router.push('/(auth)/forgot-password' as Href)} />
         </View>
-        <PrimaryButton label="Entrar" loading={loading} onPress={handleLogin} accessibilityHint="Abre a Home demonstrativa" />
+        <PrimaryButton label="Entrar" loading={loading} onPress={handleLogin} accessibilityHint="Autentica e abre a Home" />
         <View style={styles.signupRow}>
           <AppText variant="body" color={colors.textSecondary}>Ainda não tem conta?</AppText>
           <TextButton label="Criar conta" onPress={() => router.push('/(auth)/register' as Href)} />

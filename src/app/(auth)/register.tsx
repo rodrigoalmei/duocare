@@ -47,7 +47,7 @@ export default function RegisterScreen() {
         </Pressable>
       </View>
       <View style={styles.actions}>
-        <PrimaryButton label="Criar conta" disabled={!accepted} onPress={() => router.replace('/(onboarding)/welcome' as Href)} />
+        <PrimaryButton label="Criar conta" disabled={!accepted} onPress={() => router.replace('/(onboarding)/setup' as Href)} />
         <TextButton label="Já tenho uma conta" onPress={() => router.replace('/(auth)/login' as Href)} />
       </View>
     </ScreenContainer>

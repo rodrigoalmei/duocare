@@ -2,9 +2,11 @@ export const layout = {
   phonePadding: 24,
   smallPhonePadding: 20,
   tabletPadding: 32,
+  largeTabletPadding: 40,
   phoneMaxWidth: 430,
-  tabletContentMaxWidth: 960,
+  tabletContentMaxWidth: 1180,
   tabletReadingMaxWidth: 720,
+  tabletSidebarWidth: 112,
   minTouchTarget: 48,
   bottomTabHeight: 68,
 } as const;

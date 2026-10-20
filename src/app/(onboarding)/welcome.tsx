@@ -59,10 +59,16 @@ const pages: OnboardingPage[] = [
 export default function OnboardingScreen() {
   const router = useRouter();
   const { completeOnboarding } = useAppContext();
-  const { isSmallPhone, isTablet } = useResponsive();
+  const { isSmallPhone, isTabletLayout, isLargeTablet } = useResponsive();
   const [index, setIndex] = useState(0);
   const item = pages[index];
-  const horizontalPadding = isTablet ? layout.tabletPadding : isSmallPhone ? layout.smallPhonePadding : layout.phonePadding;
+  const horizontalPadding = isLargeTablet
+    ? layout.largeTabletPadding
+    : isTabletLayout
+      ? layout.tabletPadding
+      : isSmallPhone
+        ? layout.smallPhonePadding
+        : layout.phonePadding;
 
   const finish = () => {
     completeOnboarding();
@@ -81,10 +87,10 @@ export default function OnboardingScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom', 'left', 'right']}>
       <View key={item.id} style={[styles.page, { paddingHorizontal: horizontalPadding }]}> 
-        <View style={[styles.pageContent, isTablet && styles.tabletContent]}>
+        <View style={[styles.pageContent, isTabletLayout && styles.tabletContent]}>
           <View style={styles.heading}>
             <AppText variant="caption" color={colors.status.error} style={styles.eyebrow}>{item.eyebrow}</AppText>
-            <AppText variant={isTablet ? 'display' : 'h1'}>{item.title}</AppText>
+            <AppText variant={isTabletLayout ? 'display' : 'h1'}>{item.title}</AppText>
             <AppText variant="bodyLarge" color={colors.textSecondary}>{item.description}</AppText>
           </View>
           <View style={[styles.imageFrame, { backgroundColor: item.imageSurface }]}> 
@@ -96,7 +102,7 @@ export default function OnboardingScreen() {
           </View>
         </View>
       </View>
-      <View style={[styles.footer, { paddingHorizontal: horizontalPadding }, isTablet && styles.tabletFooter]}>
+      <View style={[styles.footer, { paddingHorizontal: horizontalPadding }, isTabletLayout && styles.tabletFooter]}>
         <View style={styles.indicator} accessibilityLabel={`Etapa ${index + 1} de ${pages.length}`}>
           {pages.map((page, itemIndex) => <View key={page.id} style={[styles.dot, itemIndex === index && styles.activeDot]} />)}
         </View>

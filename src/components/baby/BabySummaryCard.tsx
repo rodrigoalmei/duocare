@@ -9,10 +9,10 @@ import type { Baby } from '@/types';
 import { AppText } from '../ui';
 
 export function BabySummaryCard({ baby }: { baby: Baby }) {
-  const { isSmallPhone } = useResponsive();
-  const imageSize = isSmallPhone ? 96 : 118;
+  const { isSmallPhone, isTabletLayout } = useResponsive();
+  const imageSize = isTabletLayout ? 180 : isSmallPhone ? 96 : 118;
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, isTabletLayout && styles.cardTablet]}>
       <View style={styles.copy}>
         <AppText variant="caption" color={colors.status.warning} style={styles.kicker}>
           SEU BEBÊ TEM
@@ -37,6 +37,7 @@ export function BabySummaryCard({ baby }: { baby: Baby }) {
 
 const styles = StyleSheet.create({
   card: { width: '100%', minHeight: 166, borderRadius: radius.xl, backgroundColor: colors.brand.babyCream, padding: spacing[4], flexDirection: 'row', alignItems: 'center', gap: spacing[3] },
+  cardTablet: { minHeight: 260, padding: spacing[5] },
   copy: { flex: 1, minWidth: 0, gap: spacing[2] },
   kicker: { fontFamily: 'Inter_600SemiBold' },
   image: { borderRadius: radius.lg, backgroundColor: colors.surface },

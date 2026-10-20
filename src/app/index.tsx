@@ -7,10 +7,12 @@ import { AppText, ScreenContainer } from '@/components/ui';
 import { colors } from '@/constants/colors';
 import { radius } from '@/constants/radius';
 import { spacing } from '@/constants/spacing';
+import { useAuth } from '@/contexts/AuthContext';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 export default function SplashScreenRoute() {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const reducedMotion = useReducedMotion();
   const [opacity] = useState(() => new Animated.Value(0));
   const [translateY] = useState(() => new Animated.Value(14));
@@ -20,9 +22,12 @@ export default function SplashScreenRoute() {
       Animated.timing(opacity, { toValue: 1, duration: reducedMotion ? 120 : 320, useNativeDriver: Platform.OS !== 'web' }),
       Animated.timing(translateY, { toValue: 0, duration: reducedMotion ? 0 : 320, useNativeDriver: Platform.OS !== 'web' }),
     ]).start();
-    const timeout = setTimeout(() => router.replace('/(auth)/login' as Href), 1500);
+    const timeout = setTimeout(
+      () => router.replace((isAuthenticated ? '/home' : '/(auth)/login') as Href),
+      1500,
+    );
     return () => clearTimeout(timeout);
-  }, [opacity, reducedMotion, router, translateY]);
+  }, [isAuthenticated, opacity, reducedMotion, router, translateY]);
 
   return (
     <ScreenContainer backgroundColor="#FFF8F6" edges={['top', 'bottom', 'left', 'right']}>

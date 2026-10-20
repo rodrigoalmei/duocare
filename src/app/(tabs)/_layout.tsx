@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { TabletSidebar } from '@/components/navigation';
 import { colors } from '@/constants/colors';
 import { layout, shadow } from '@/constants/layout';
 import { radius } from '@/constants/radius';
@@ -9,21 +10,22 @@ import { fontFamily } from '@/constants/typography';
 import { useResponsive } from '@/hooks/useResponsive';
 
 export default function TabsLayout() {
-  const { isTablet } = useResponsive();
+  const { isTabletLayout } = useResponsive();
   const insets = useSafeAreaInsets();
   return (
     <Tabs
+      tabBar={isTabletLayout ? () => <TabletSidebar /> : undefined}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.brand.coral,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarHideOnKeyboard: true,
-        tabBarPosition: isTablet ? 'left' : 'bottom',
-        tabBarVariant: isTablet ? 'material' : 'uikit',
+        tabBarPosition: isTabletLayout ? 'left' : 'bottom',
+        tabBarVariant: isTabletLayout ? 'material' : 'uikit',
         tabBarLabelPosition: 'below-icon',
         tabBarLabelStyle: { fontFamily: fontFamily.regular, fontSize: 11 },
-        tabBarStyle: isTablet
-          ? { width: 112, borderRightWidth: 0, backgroundColor: colors.surface, paddingVertical: 20 }
+        tabBarStyle: isTabletLayout
+          ? { width: layout.tabletSidebarWidth, borderRightWidth: 0, backgroundColor: colors.background }
           : {
               position: 'absolute',
               height: layout.bottomTabHeight + insets.bottom,

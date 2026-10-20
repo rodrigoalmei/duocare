@@ -11,6 +11,8 @@ import { spacing } from '@/constants/spacing';
 export default function ForgotPasswordScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const emailError = submitted && !/^\S+@\S+\.\S+$/.test(email) ? 'Informe um e-mail válido.' : undefined;
   return (
     <ScreenContainer scroll keyboard maxWidth={520} edges={['top', 'bottom', 'left', 'right']} contentStyle={styles.content}>
       <BackHeader title="Recuperar senha" />
@@ -18,8 +20,8 @@ export default function ForgotPasswordScreen() {
         <AppText variant="h1">Recupere sua senha</AppText>
         <AppText variant="body" color={colors.textSecondary}>Informe o e-mail da sua conta para receber instruções demonstrativas.</AppText>
       </View>
-      <TextField label="E-mail da conta" placeholder="seuemail@exemplo.com" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-      <PrimaryButton label="Enviar instruções" onPress={() => router.push('/(auth)/verify-email' as Href)} />
+      <TextField label="E-mail da conta" placeholder="seuemail@exemplo.com" value={email} onChangeText={setEmail} error={emailError} keyboardType="email-address" autoCapitalize="none" autoComplete="email" />
+      <PrimaryButton label="Enviar instruções" onPress={() => { setSubmitted(true); if (/^\S+@\S+\.\S+$/.test(email)) router.push('/(auth)/verify-email' as Href); }} />
       <TextButton label="Voltar ao login" onPress={() => router.replace('/(auth)/login' as Href)} />
     </ScreenContainer>
   );

@@ -1,0 +1,12 @@
+
+> duocare-mobile@1.0.0 web
+> expo start --web --port 8081
+
+Starting project at C:\Users\rodri\Desktop\DUOCARE\mobile
+Using src/app as the root directory for Expo Router.
+React Compiler enabled
+Starting Metro Bundler
+
+Waiting on http://localhost:8081
+
+Logs for your project will appear below.

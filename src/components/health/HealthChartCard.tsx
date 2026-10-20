@@ -6,14 +6,14 @@ import { spacing } from '@/constants/spacing';
 
 import { AppText } from '../ui';
 
-type HealthChartCardProps = { values: number[]; labels?: string[] };
+type HealthChartCardProps = { values: number[]; labels?: string[]; title?: string };
 
-export function HealthChartCard({ values, labels = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'] }: HealthChartCardProps) {
+export function HealthChartCard({ values, labels = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'], title = 'Atividade' }: HealthChartCardProps) {
   const max = Math.max(...values, 1);
   return (
     <View style={styles.card} accessibilityLabel="Resumo semanal demonstrativo em gráfico de barras">
       <View style={styles.header}>
-        <AppText variant="label">Atividade</AppText>
+        <AppText variant="label">{title}</AppText>
         <AppText variant="caption" color={colors.status.error} style={styles.demo}>
           DEMONSTRATIVO
         </AppText>

@@ -9,4 +9,20 @@ export const alertsMock: AlertItem[] = [
     createdAt: 'Agora',
     read: false,
   },
+  {
+    id: 'alert-demo-02',
+    title: 'Novo material para consulta',
+    description: 'Um conteúdo demonstrativo foi adicionado à biblioteca.',
+    source: 'Conteúdo',
+    createdAt: 'Ontem',
+    read: false,
+  },
+  {
+    id: 'alert-demo-03',
+    title: 'Preferência atualizada',
+    description: 'Uma configuração do aplicativo foi alterada.',
+    source: 'Conta',
+    createdAt: '02 out',
+    read: true,
+  },
 ];

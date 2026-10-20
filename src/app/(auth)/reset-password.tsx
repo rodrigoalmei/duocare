@@ -11,6 +11,9 @@ export default function ResetPasswordScreen() {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const passwordError = submitted && password.length < 8 ? 'Use pelo menos 8 caracteres nesta demonstração.' : undefined;
+  const confirmationError = submitted && confirmation !== password ? 'As senhas precisam ser iguais.' : undefined;
   return (
     <ScreenContainer scroll keyboard maxWidth={520} edges={['top', 'bottom', 'left', 'right']} contentStyle={styles.content}>
       <View style={styles.heading}>
@@ -18,9 +21,9 @@ export default function ResetPasswordScreen() {
         <AppText variant="h1">Crie uma senha segura</AppText>
         <AppText variant="body" color={colors.textSecondary}>Use uma combinação fácil de lembrar e difícil de adivinhar.</AppText>
       </View>
-      <PasswordField label="Nova senha" placeholder="Digite a nova senha" value={password} onChangeText={setPassword} />
-      <PasswordField label="Confirmação" placeholder="Repita a nova senha" value={confirmation} onChangeText={setConfirmation} />
-      <PrimaryButton label="Salvar nova senha" onPress={() => router.replace('/(auth)/login' as Href)} />
+      <PasswordField label="Nova senha" placeholder="Digite a nova senha" value={password} onChangeText={setPassword} error={passwordError} autoComplete="new-password" />
+      <PasswordField label="Confirmação" placeholder="Repita a nova senha" value={confirmation} onChangeText={setConfirmation} error={confirmationError} autoComplete="new-password" />
+      <PrimaryButton label="Salvar nova senha" onPress={() => { setSubmitted(true); if (password.length >= 8 && confirmation === password) router.replace('/(auth)/login' as Href); }} />
       <TextButton label="Cancelar" onPress={() => router.replace('/(auth)/login' as Href)} />
     </ScreenContainer>
   );
